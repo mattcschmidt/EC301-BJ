@@ -1,0 +1,62 @@
+﻿<Window x:Class="Model_Validation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Model_Validation"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock FontSize="24" FontWeight="Bold" Text="Verification Data"
+                   Grid.ColumnSpan="4" HorizontalAlignment="Center"/>
+        <TextBlock Text="Patient Id:" Grid.Row="1"/>
+        <TextBox Text="{Binding PatientId}" Grid.Row="1" Grid.Column="1" Width="120"/>
+        <Button Grid.Row="1" Grid.Column="3" Content="Open Patient"
+                Width="120" Command="{Binding OpenPatientCommand}"/>
+        <TextBlock Text="Course:" Grid.Row="2"/>
+        <ComboBox Grid.Row="2" Grid.Column="1" Width="150"
+                  ItemsSource="{Binding Courses}"
+                  SelectedItem="{Binding SelectedCourse, Mode=TwoWay}"/>
+        <TextBlock Text="Plan:" Grid.Row="2" Grid.Column="2"/>
+        <ComboBox Grid.Row="2" Grid.Column="3" Width="150"
+                  ItemsSource="{Binding PlanSetups}" 
+                  SelectedItem="{Binding SelectedPlan, Mode=TwoWay}"/>
+        <ListBox Grid.Row="4" ItemsSource="{Binding ScanDataCollection}"
+                 Grid.ColumnSpan="4">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        FS: (
+                        <Run Text="{Binding FieldSize}"/>
+                        ) Dir: (
+                        <Run Text="{Binding Direction}"/>
+                        ) Depth: (
+                        <Run Text="{Binding Depth}"/>)
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Grid.Row="5" Grid.ColumnSpan="4" Content="Export Scan Data"
+                Command="{Binding ExportDataCommand}"/>
+        <!--Writable Scripting only.-->
+        <TextBlock Grid.Row="3" Text=" Field sizes:"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding FieldSizes}"/>
+        <Button Content="Calculate Beams" Grid.Row="3" Grid.Column="3"
+                Command="{Binding CalculateBeamsCommand}"/>
+    </Grid>
+</Window>
