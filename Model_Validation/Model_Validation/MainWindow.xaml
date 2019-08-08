@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:local="clr-namespace:Model_Validation"
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="800">
@@ -14,6 +15,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="200"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -37,7 +39,7 @@
                   ItemsSource="{Binding PlanSetups}" 
                   SelectedItem="{Binding SelectedPlan, Mode=TwoWay}"/>
         <ListBox Grid.Row="4" ItemsSource="{Binding ScanDataCollection}"
-                 Grid.ColumnSpan="4">
+                 Grid.ColumnSpan="4" SelectedItem="{Binding SelectedScan}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
@@ -58,5 +60,6 @@
         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding FieldSizes}"/>
         <Button Content="Calculate Beams" Grid.Row="3" Grid.Column="3"
                 Command="{Binding CalculateBeamsCommand}"/>
+        <oxy:PlotView Model="{Binding MyPlotModel}" Grid.Row="6" Grid.Column="4"/>
     </Grid>
 </Window>

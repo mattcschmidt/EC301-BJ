@@ -1,4 +1,6 @@
-﻿using Prism.Commands;
+﻿using OxyPlot;
+using OxyPlot.Series;
+using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
@@ -48,6 +50,35 @@ namespace Model_Validation
         private Patient patient;
         private Course course;
         private PlanSetup plan;
+
+        public PlotModel MyPlotModel { get; private set; }
+        private ScanData selectedScan;
+
+        public ScanData SelectedScan
+        {
+            get { return selectedScan; }
+            set {
+                SetProperty(ref selectedScan,value);
+                UpdatePlot();
+            }
+        }
+
+        private void UpdatePlot()
+        {
+            MyPlotModel.Series.Clear();
+            if (SelectedScan != null)
+            {
+                MyPlotModel.Title = $"{SelectedScan.Direction}: FS:{SelectedScan.FieldSize}mm: Depth:{SelectedScan.Depth}mm";
+                LineSeries series = new LineSeries();
+                foreach(ScanDataPoint point in SelectedScan.DataPoints)
+                {
+                    series.Points.Add(new DataPoint(point.Position, point.Dose));
+                }
+                MyPlotModel.Series.Add(series);
+                MyPlotModel.InvalidatePlot(true);
+            }
+        }
+
         public MainViewModel(VMS.TPS.Common.Model.API.Application app)
         {
             this.app = app;
@@ -55,7 +86,7 @@ namespace Model_Validation
             Courses = new ObservableCollection<string>();
             PlanSetups = new ObservableCollection<string>();
             ScanDataCollection = new ObservableCollection<ScanData>();
-
+            MyPlotModel = new PlotModel();
             FieldSizes = "3;7;17";
             OpenPatientCommand = new DelegateCommand(OnOpenPatient);
             ExportDataCommand = new DelegateCommand(OnExportData, CanExportData);
